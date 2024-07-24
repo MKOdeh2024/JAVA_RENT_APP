@@ -7,70 +7,76 @@ import java.util.stream.Collectors;
 
 
 public class main {
-	 private static List<Building> buildings = new ArrayList<>();
+    private static List<Building> buildings = new ArrayList<>();
+    private static List<Owner> owners = new ArrayList<>();
 
-	 public static void main(String[] args) {
-		 
-		 // Initialize buildings
-	        buildings.add(new Apartment("City View Apartment", "123 Main St", 850.5, true));
-	        buildings.add(new House("Sunset Villa", "456 Elm St", 1200.75 , false));
-	        buildings.add(new Shop("Downtown Shop", "789 Market St", 400.0, true));
+    public static void main(String[] args) {
+        // Initialize buildings and owners
+    	
+    	 Owner owner1 = new Owner("Jane Smith");
+         Owner owner2 = new Owner("Bob Johnson");
+         Owner owner3 = new Owner("Alice Brown");
+         
+         owners.add(owner1);
+         owners.add(owner2);
+         owners.add(owner3);
+    	
+    	// Initialize buildings
+        buildings.add(new Apartment("Skyline Apartments", "100 High St", 1000.0, true, owner1));
+        buildings.add(new House("Maple Grove Cottage", "200 Maple Ave", 1500.0, true, owner1));
+        buildings.add(new Shop("Downtown Boutique", "300 Main St", 800.0, true, owner1));
+        buildings.add(new Apartment("Riverside Lofts", "150 River Rd", 1200.0, true, owner1));
 
-	        // Customer
-	        Customer customer = new Customer("John Doe");
+        buildings.add(new House("Oakwood Manor", "250 Oak St", 2000.0, true, owner2));
+        buildings.add(new Shop("Tech Hub Store", "350 Innovation Ave", 1000.0, true, owner2));
+        buildings.add(new Apartment("City Center Suites", "400 Center St", 1100.0, true, owner2));
 
-	        // Demonstrate rental process
-	        try {
-	            Contract contract1 = new Contract(customer, searchBuildingByName("City View Apartment"), 12, 1200.0);
-	            customer.addContract(contract1);
-	        } catch (Exception e) {
-	            System.out.println(e.getMessage());
-	        }
+        buildings.add(new House("Sunflower Cottage", "500 Garden Rd", 1800.0, true, owner3));
+        buildings.add(new Shop("Artisan's Corner", "600 Craft St", 750.0, true, owner3));
+        buildings.add(new Apartment("Harbor View Residences", "700 Dock Rd", 1300.0, true, owner3));
+        
+        
+       
 
-	        buildings.get(1).setAvailability(false); // Manually setting a building to unavailable for demonstration
+       
 
-	        try {
-	            Contract contract2 = new Contract(customer, searchBuildingByName("Sunset Villa"), 6, 1500.0);
-	            customer.addContract(contract2);
-	        } catch (Exception e) {
-	            System.out.println(e.getMessage());
-	        }
+        
 
-	        try {
-	            Contract contract3 = new Contract(customer, searchBuildingByName("Downtown Shop"), 24, 800.0);
-	            customer.addContract(contract3);
-	        } catch (Exception e) {
-	            System.out.println(e.getMessage());
-	        }
+        // Initialize customer with initial balance
+        Customer customer = new  Customer("John Doe", 5000.0);
 
-	        customer.displayContracts();
-	        
+        // Demonstrate rental process
+        try {
+        	customer.rent(owner1, searchBuildingByName("Downtown Boutique"), 12, 1200.0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-	        // Demonstrate payment
-	        Payment payment1 = new PayPal("john.doe@example.com");
-	        Payment payment2 = new Visa("1234-5678-9101-1121");
-	        Payment payment3 = new MasterCard("1111-2222-3333-4444");
+        try {
+            customer.rent(owner2, searchBuildingByName("Sunset Villa"), 6, 1500.0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-	        payment1.pay(1200.0);
-	        payment2.pay(1500.0);
-	        payment3.pay(800.0);
-	    }
-	 
+        try {
+            customer.rent(owner3, searchBuildingByName("Downtown Shop"), 24, 800.0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-	    // Search and filter functionalities
-	    public static Building searchBuildingByName(String name) {
-	        for (Building building : buildings) {
-	            if (building.name.equals(name) && building.isAvailable()) {
-	                return building;
-	            }
-	        }
-	        throw new IllegalStateException("Building not found or unavailable.");
-	    }
+        // Display all contracts
+        System.out.println("\nAll contracts for " + customer.getName() + ":");
+        customer.displayContracts();
 
-	    public static List<Building> filterBuildingsBySize(double minSize, double maxSize) {
-	        return buildings.stream()
-	                .filter(building -> building.size >= minSize && building.size <= maxSize && building.isAvailable())
-	                .collect(Collectors.toList());
-	    }
+        // Note: Payment is now handled within the rent() method, so we don't need separate payment calls here
+    }
 
+    private static Building searchBuildingByName(String name) {
+        for (Building building : buildings) {
+            if (building.getName().equals(name)) {
+                return building;
+            }
+        }
+        throw new IllegalArgumentException("Building not found: " + name);
+    }
 }
