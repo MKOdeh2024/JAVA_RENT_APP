@@ -3,8 +3,8 @@ package OOP;
 
 // shop class
 public class Shop extends Building {
-	public Shop(String name, String address, double size, boolean isAvailable) {
-        super(name, address, size, isAvailable);
+	public Shop(String name, String address, double size, boolean isAvailable,Owner owner) {
+        super(name, address, size, isAvailable, owner);
     }
 
     @Override
