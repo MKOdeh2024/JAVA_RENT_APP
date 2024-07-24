@@ -6,12 +6,14 @@ abstract class Building {
     protected String address;
     protected double size;
     private boolean isAvailable;
+    private Owner owner;
     
-    public Building(String name, String address, double size, boolean isAvailable) {
+    public Building(String name, String address, double size, boolean isAvailable , Owner owner) {
         this.name = name;
         this.address = address;
         this.size = size;
         this.isAvailable = isAvailable;
+        this.owner = owner;
     }
     
     
