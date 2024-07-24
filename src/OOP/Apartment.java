@@ -3,8 +3,8 @@ package OOP;
 
 // Specific types of buildings
 public class Apartment extends Building {
-    public Apartment(String name, String address, double size, boolean isAvailable) {
-        super(name, address, size, isAvailable);
+    public Apartment(String name, String address, double size, boolean isAvailable, Owner owner) {
+        super(name, address, size, isAvailable,owner);
 
   }
     
